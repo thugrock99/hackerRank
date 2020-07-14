@@ -5,6 +5,9 @@ import os
 import random
 import re
 import sys
+
+#1. Using Greedy approach
+
 # Complete the mandragora function below.
 # First, Sort the array.
 # Secondly, Eat the monsters with the lowest health points first until a certain point X.
@@ -33,6 +36,18 @@ def mandragora(H):
             break
     return p
 
+# 2. Using DP
+
+def mandragora_DP(H):
+    n     = len(H)
+    H.sort()
+    f = [0]*(n+1)
+    for i in range(1,n+1):
+        f[i]=f[i-1]+H[i-1]
+    for i in range(1,n+1):
+        if(i*(f[n]-f[i-1])>(i+1)*(f[n]-f[i])):
+            return i*(f[n]-f[i-1])
+
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
 
@@ -43,9 +58,8 @@ if __name__ == '__main__':
 
         H = list(map(int, input().rstrip().split()))
 
-        result = mandragora(H)
+        result = mandragora_DP(H)
 
         fptr.write(str(result) + '\n')
 
     fptr.close()
- 
